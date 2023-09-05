@@ -3,13 +3,14 @@ from tools import getch
 
 # Git shortcut of Add
 def git_add(*args, skip = False):
-    os.system("git status | head -n -1")
-    advertance = f"continue to add {len(args)} files? (y/n): "
+    os.system("git status | head -n 1")
+    s = "s" if len(args) > 1 else ""
+    advertance = f"continue to add {len(args)} file{s}? (y/n): "
     if "." in args:
         advertance = f"continue to add ALL files? (y/n): "
         args = ["."]
     if not skip:
-        print(advertance, end="")
+        print(advertance)
     if skip or getch().lower() == "y":
         files = " ".join(args)
         os.system(f"git add {files}")
