@@ -1,0 +1,33 @@
+{
+    "username": "Vicente-G",
+    "pr-format": [
+        {
+            "title": "What changes?",
+            "default": "This PR adds "
+        },
+        {
+            "title": "Was it tested? How?",
+            "default": "Yes, it was tested. It has been tested "
+        },
+        {
+            "title": "Is there a GH Issue involved on the development of this PR?",
+            "default": ""
+        },
+        {
+            "title": "Is there a Project Card that this PR is related to?",
+            "default": ""
+        }
+    ],
+    "templates": {
+        "p": {
+            "display": "[P]ython",
+            "config-file": "pyproject.toml",
+            "url": "git@github.com:Vicente-G/Example-Service-PY.git"
+        },
+        "t": {
+            "display": "[T]ypescript",
+            "config-file": "package.json",
+            "url": "git@github.com:Vicente-G/Example-Service-TS.git"
+        }
+    }
+}
