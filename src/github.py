@@ -11,8 +11,8 @@ def gh_make_pr(skip = False):
     body_questions = config["pr-format"]
     body = ""
     for question in body_questions:
-        body += "## " + question["name"] + "\n\n"
-        body += rlinput(question["name"] + " ", question["default"]) + "\n\n"
+        body += "## " + question["title"] + "\n\n"
+        body += rlinput(question["title"] + " ", question["default"]) + "\n\n"
     with open(".git/pr-body.md", "w") as file:
         file.write(body)
     system(f"gh pr create --title \"{title}\" --body-file .git/pr-body.md")
