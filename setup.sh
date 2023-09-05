@@ -25,8 +25,13 @@ brew_install git
 brew_install gh
 # Installation of vg CLI
 git clone https://github.com/Vicente-G/vg-cli.git /usr/local/lib/vg
+rm /usr/local/lib/vg/setup.sh \
+/usr/local/lib/vg/README.md \
+/usr/local/lib/vg/.gitignore
+rm -rf /usr/local/lib/vg/.git
 mv /usr/local/lib/vg/vg.sh /usr/local/bin/vg.sh
-chmod +x /usr/local/bin/vg.sh
+mv /usr/local/bin/vg/vg.sh /usr/local/bin/vg
+chmod +x /usr/local/bin/vg
 # Checking for Zsh and OhMyZsh!
 brew_install zsh
 echo "Install OhMyZsh!? (y/n) "
