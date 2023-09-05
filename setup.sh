@@ -24,13 +24,18 @@ brew_install python3
 brew_install git
 brew_install gh
 # Installation of vg CLI
+echo "Install the Vicente-G's CLI? (y/n) "
+read -s -n 1 ans
+if [[ $ans == "y" ]]
+then echo "Installing Vicente-G's CLI..."
 git clone https://github.com/Vicente-G/vg-cli.git /usr/local/lib/vg
 rm /usr/local/lib/vg/setup.sh \
 /usr/local/lib/vg/README.md \
 /usr/local/lib/vg/.gitignore
 rm -rf /usr/local/lib/vg/.git
 mv /usr/local/lib/vg/vg.sh /usr/local/bin/vg.sh
-mv /usr/local/bin/vg/vg.sh /usr/local/bin/vg
+cd /usr/local/bin
+mv vg.sh vg ; cd ; fi
 chmod +x /usr/local/bin/vg
 # Checking for Zsh and OhMyZsh!
 brew_install zsh
