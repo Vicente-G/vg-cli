@@ -7,7 +7,7 @@ function brew_install() {
     else printf "[SUCCESS]\n"
     fi
 }
-# Getting on home folder
+
 cd
 # Adding our folder target to PATH
 if [[ ::$PATH:: != *:/usr/local/bin:* ]]
@@ -20,7 +20,6 @@ then printf "[FAILURE]\n Installing Homebrew!\n"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else printf "[SUCCESS]\n"
 fi
-fi
 # Checking for CLI dependencies
 brew_install python3
 brew_install git
@@ -29,6 +28,7 @@ brew_install gh
 printf "Getting pyautogui and numpy... "
 pip3 install -qq --no-input pyautogui numpy
 printf "[SUCCESS]\n"
+
 # Installation of vg CLI
 echo "Install the Vicente-G's CLI? (y/n) "
 read -s -n 1 ans
