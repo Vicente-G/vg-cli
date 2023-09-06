@@ -13,16 +13,22 @@ cd
 if [[ ::$PATH:: != *:/usr/local/bin:* ]]
 then PATH="/usr/local/bin:$PATH"
 fi
-# Checking for Homebrew
+printf "Looking for installation of Homebrew... "
 brew --version >& /dev/null
 if [[ $? != 0 ]]
-then echo "Installing Homebrew..."
+then printf "[FAILURE]\n Installing Homebrew!\n"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else printf "[SUCCESS]\n"
+fi
 fi
 # Checking for CLI dependencies
 brew_install python3
 brew_install git
 brew_install gh
+# Adding python useful modules
+printf "Getting pyautogui and numpy... "
+pip3 install -qq --no-input pyautogui numpy
+printf "[SUCCESS]\n"
 # Installation of vg CLI
 echo "Install the Vicente-G's CLI? (y/n) "
 read -s -n 1 ans
@@ -35,8 +41,9 @@ rm /usr/local/lib/vg/setup.sh \
 rm -rf /usr/local/lib/vg/.git
 mv /usr/local/lib/vg/vg.sh /usr/local/bin/vg.sh
 cd /usr/local/bin
-mv vg.sh vg ; cd ; fi
+mv vg.sh vg ; cd
 chmod +x /usr/local/bin/vg
+fi
 # Checking for Zsh and OhMyZsh!
 brew_install zsh
 echo "Install OhMyZsh!? (y/n) "

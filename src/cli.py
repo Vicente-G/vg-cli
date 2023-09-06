@@ -29,7 +29,7 @@ parser = ArgumentParser(
     description=description,
     formatter_class=RawTextHelpFormatter
 )
-parser.version = "1.0.0"
+parser.version = "1.1.0"
 
 parser.add_argument(
     "command",
