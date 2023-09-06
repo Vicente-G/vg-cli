@@ -1,4 +1,4 @@
-import readline
+from pyautogui import write
 import sys
 import tty
 import termios
@@ -14,8 +14,6 @@ def getch():
     return ch
 
 def rlinput(prompt, prefill=''):
-    readline.set_startup_hook(lambda: readline.insert_text(prefill))
-    try:
-        return input(prompt)
-    finally:
-        readline.set_startup_hook()
+    print(prompt, end='', flush=True)
+    write(prefill)
+    return input()

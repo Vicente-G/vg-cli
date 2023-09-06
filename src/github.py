@@ -4,7 +4,7 @@ from os import system
 
 def gh_make_pr(skip = False):
     config = load_config()
-    title = rlinput("Set title? (last commit) ")
+    title = input("Set title? (last commit) ")
     if title == "":
         with open(".git/COMMIT_EDITMSG", "r") as file:
             title = file.read().replace("\n", "").replace("\r", "")
