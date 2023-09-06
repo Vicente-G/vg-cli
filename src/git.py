@@ -19,10 +19,7 @@ def git_add(*args, skip = False):
 
 # Git shortcut of Branch
 def git_branch(name, skip = False):
-    exists = os.system(f"git show-ref --verify --quiet refs/heads/{name}")
-    if exists != 0:
-        os.system(f"git branch {name}")
-    os.system(f"git checkout {name}")
+    os.system(f"git branch -M {name}")
     return 0
 
 # Git shortcut of Commit
