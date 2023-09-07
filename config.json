@@ -28,6 +28,11 @@
             "display": "[T]ypescript",
             "config-file": "package.json",
             "url": "git@github.com:Vicente-G/Example-Service-TS.git"
+        },
+        "c": {
+            "display": "open[C]v",
+            "config-file": "pyproject.toml",
+            "url": "git@github.com:Vicente-G/Example-Python-CV.git"
         }
     }
 }
