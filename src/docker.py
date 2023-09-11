@@ -32,13 +32,15 @@ def drun(env_vars_length = 0, skip = False):
     if not port:
         print("vg: error: no available port (3000-9900)")
         return 1
-    flags = f"-d -t -p --rm {port}:8080 -e PORT='8080' "
+    flags = f"-d -t -p {port}:8080 -e PORT='8080'"
     image = get_cwd()
-    if srun(f"docker ps | grep {image}-instance") != 0:
-        print("container already running! stopping...", end="")
-        os.system(f"docker stop {image}-instance")
-        print(" [SUCCESS]")
-    flags += f"--name {image}-instance"
+    if srun(f"docker ps -a | grep {image}-instance") == 0:
+        print("container already started! stopping... ", end="", flush=True)
+        srun(f"docker stop {image}-instance")
+        print("[SUCCESS]\nnow removing... ", end="", flush=True)
+        srun(f"docker rm {image}-instance")
+        print("[SUCCESS]")
+    flags += f" --name {image}-instance"
     for _ in range(env_vars_length):
         var = input("env var: ").upper()
         var = var.replace(' ', '_').replace('-', '_')
@@ -53,7 +55,7 @@ def drun(env_vars_length = 0, skip = False):
 def dwatch(skip = False):
     _check_daemon()
     image = get_cwd()
-    if srun(f"docker ps | grep {image}-instance") != 0:
+    if srun(f"docker ps | grep {image}-instance") == 0:
         print("vg: error: no running container")
         return 1
     print("press 'Ctrl+C' to quit...")
