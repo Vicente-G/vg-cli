@@ -3,7 +3,7 @@ import os
 
 def _check_daemon():
     if srun("colima status") != 0:
-        print("docker daemon is not running, starting...")
+        print("docker daemon is not running, starting it now...")
         os.system("colima start")
 
 def _get_port():
@@ -32,8 +32,12 @@ def drun(env_vars_length = 0, skip = False):
     if not port:
         print("vg: error: no available port (3000-9900)")
         return 1
-    flags = f"-d -t -p {port}:8080 -e PORT='8080' "
+    flags = f"-d -t -p --rm {port}:8080 -e PORT='8080' "
     image = get_cwd()
+    if srun(f"docker ps | grep {image}-instance") != 0:
+        print("container already running! stopping...", end="")
+        os.system(f"docker stop {image}-instance")
+        print(" [SUCCESS]")
     flags += f"--name {image}-instance"
     for _ in range(env_vars_length):
         var = input("env var: ").upper()
@@ -49,6 +53,9 @@ def drun(env_vars_length = 0, skip = False):
 def dwatch(skip = False):
     _check_daemon()
     image = get_cwd()
+    if srun(f"docker ps | grep {image}-instance") != 0:
+        print("vg: error: no running container")
+        return 1
     print("press 'Ctrl+C' to quit...")
-    os.system(f"docker logs --follow {image}-instance")
+    os.system(f"docker logs --details -f {image}-instance")
     return 0
