@@ -1,5 +1,5 @@
+from tools import srun
 import json
-import os
 
 CONFIG_FILE = "/usr/local/lib/vg/config.json"
 
@@ -30,8 +30,7 @@ def add_template(skip = False):
     repo = input("Template repository name: ")
     url = f"http://github.com/{owner}/{repo}/blob/main/{cfile}"
     flags = "--head --silent --fail"
-    check = os.system(f"curl {flags} {url} &> /dev/null")
-    if check != 0:
+    if srun(f"curl {flags} {url}") != 0:
         print("vg: error: repo doesn't respond, please try again")
         return 1
     config["templates"][key] = {
