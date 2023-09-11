@@ -52,7 +52,7 @@ def gh_setup_template(name, owner, template):
 def gh_init(skip = False):
     config = load_config()
     user, cwd = config["username"], os.path.realpath('.')
-    if askyn(f"Starting project in {cwd}, continue?", skip):
+    if not askyn(f"Starting project in {cwd}, continue?", skip):
         return 0
     name = input("What is the project name? ")
     template_used = gh_template_use(name, config["templates"])
