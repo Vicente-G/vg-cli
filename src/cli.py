@@ -1,6 +1,9 @@
 from git import git_add, git_branch, git_commit, git_download, git_upload
-from config import add_template
 from github import gh_make_pr
+from colima import dstart, dstop
+from docker import dbuild, drun, dwatch
+
+from config import add_template
 from template import gh_init
 from argparse import RawTextHelpFormatter, ArgumentParser
 
@@ -12,7 +15,12 @@ FUNCTIONS = {
     "branch": git_branch,
     "download": git_download,
     "upload": git_upload,
-    "pr": gh_make_pr
+    "pr": gh_make_pr,
+    "dstart": dstart,
+    "dstop": dstop,
+    "dbuild": dbuild,
+    "drun": drun,
+    "dwatch": dwatch
 }
 
 description = """A CLI with Vicente-G's day-to-day functions
@@ -25,6 +33,11 @@ branch    \tcreate and/or switch to a branch in this repo
 commit    \tmake a commit with a guided interface into this repo
 download  \tclone a repo with a given URL or pull from origin
 upload    \tset origin to a given URL or push from this repo
+dstart    \tstart the docker daemon with colima by default
+dstop     \tstop the daemon, removing null images and containers
+dbuild    \tbuild an image from a specified file and this repo
+drun      \trun a container from the built image using N env vars
+dwatch    \twatch the logs of the running container on this repo
 """
 
 parser = ArgumentParser(

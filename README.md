@@ -35,7 +35,6 @@ With this command, and doing a confirmation, the cli will be removed from your s
 I plan to make some other stuff with this cli when I get more time, so here is my TODO list:
 
 * More GH commands! (Check the status of PRs and Issues, accept a PR to merge, etc)
-* Docker commands! (I would like to begin using just the terminal for productivity)
 * OMZ auto config with the setup (This should be easy, but I need some testing)
 * One password only command (I want to stop typing so much passwords on everything!)
 * SSH easy config for GH (I always forget how it is done, so it could be of big help)

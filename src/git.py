@@ -4,7 +4,10 @@ from tools import getch
 # Git shortcut of Add
 def git_add(*args, skip = False):
     os.system("git status | head -n 1")
-    s = "s" if len(args) == 1 else ""
+    if len(args) == 0:
+        print("vg: error: no files provided")
+        return 1
+    s = "s" if len(args) != 1 else ""
     advertance = f"continue to add {len(args)} file{s}? (y/n): "
     if "." in args:
         advertance = f"continue to add ALL files? (y/n): "
