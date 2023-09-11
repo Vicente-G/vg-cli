@@ -1,21 +1,15 @@
-from tools import getch
+from tools import get_cwd, askyn, srun
 import os
 
-def _get_cwd():
-    complete = os.getcwd()
-    return complete.split('/')[-1]
-
 def _check_daemon():
-    status = os.system("colima status &> /dev/null")
-    if status != 0:
-        print("docker daemon is not running, starting...")
+    if srun("colima status") != 0:
+        print("docker daemon is not running, starting it now...")
         os.system("colima start")
 
 def _get_port():
     port = 3000
     while port < 9901:
-        status = os.system(f"netstat -taln | grep {port} &> /dev/null")
-        if status != 0:
+        if srun(f"netstat -taln | grep {port}") != 0:
             return port
         port += 100
     return 0
@@ -23,11 +17,9 @@ def _get_port():
 # Build docker image
 def dbuild(file = "Dockerfile", skip = False):
     _check_daemon()
-    img_name = f"-t {_get_cwd()}"
+    img_name = f"-t {get_cwd()}"
     target = f"-f {os.path.join(os.getcwd(), file)}"
-    if not skip:
-        print(f"want to use cache? (y/n) ")
-    if skip or getch() == 'y':
+    if askyn("want to use cache?", skip):
         os.system(f"docker build {target} {img_name} .")
     else:
         os.system(f"docker build --no-cache {target} {img_name} .")
@@ -40,22 +32,30 @@ def drun(env_vars_length = 0, skip = False):
     if not port:
         print("vg: error: no available port (3000-9900)")
         return 1
-    flags = f"-d -t -p {port}:8080 -e PORT='8080' "
-    image = _get_cwd()
+    flags = f"-d -t -p --rm {port}:8080 -e PORT='8080' "
+    image = get_cwd()
+    if srun(f"docker ps | grep {image}-instance") != 0:
+        print("container already running! stopping...", end="")
+        os.system(f"docker stop {image}-instance")
+        print(" [SUCCESS]")
     flags += f"--name {image}-instance"
     for _ in range(env_vars_length):
         var = input("env var: ").upper()
         var = var.replace(' ', '_').replace('-', '_')
         value = input(f"value of {var}: ")
         flags += f" -e {var}='{value}'"
-    os.system(f"docker run {flags} {image} &> /dev/null")
-    print(f"container on localhost:{port}/, use 'vg dwatch' to see output")
+    srun(f"docker run {flags} {image}")
+    print(f"running container on http://localhost:{port}/")
+    print("use 'vg dwatch' to see container's output")
     return 0
 
 # Watch docker container output
 def dwatch(skip = False):
     _check_daemon()
-    image = _get_cwd()
+    image = get_cwd()
+    if srun(f"docker ps | grep {image}-instance") != 0:
+        print("vg: error: no running container")
+        return 1
     print("press 'Ctrl+C' to quit...")
-    os.system(f"docker logs --follow {image}-instance")
+    os.system(f"docker logs --details -f {image}-instance")
     return 0

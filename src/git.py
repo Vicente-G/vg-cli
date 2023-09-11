@@ -1,5 +1,5 @@
 import os
-from tools import getch
+from tools import getch, askyn, get_one_line, srun
 
 # Git shortcut of Add
 def git_add(*args, skip = False):
@@ -8,13 +8,11 @@ def git_add(*args, skip = False):
         print("vg: error: no files provided")
         return 1
     s = "s" if len(args) != 1 else ""
-    advertance = f"continue to add {len(args)} file{s}? (y/n): "
+    advertance = f"continue to add {len(args)} file{s}?"
     if "." in args:
-        advertance = f"continue to add ALL files? (y/n): "
+        advertance = f"continue to add ALL files?"
         args = ["."]
-    if not skip:
-        print(advertance)
-    if skip or getch().lower() == "y":
+    if askyn(advertance, skip):
         files = " ".join(args)
         os.system(f"git add {files}")
         print("files added successfully!")
@@ -55,9 +53,7 @@ def git_commit(skip = False):
 def git_download(url = None, skip = False):
     if url is not None:
         cwd = os.path.realpath('.')
-        if not skip:
-            print(f"Clonning into {cwd}, continue? (y/n) ")
-        if skip or getch() == "y":
+        if askyn(f"Clonning into {cwd}, continue?", skip):
             os.system(f"git clone {url}")
         return 0
     elif os.path.exists('./.git'):
@@ -69,24 +65,17 @@ def git_download(url = None, skip = False):
 # Git shortcut of Remote/Push
 def git_upload(url = None, skip = False):
     if url is not None:
-        os.system("printf \"At \"")
-        check = os.system("git remote | grep -w origin")
-        if check != 0:
+        if srun("git remote | grep -w origin") != 0:
             os.system(f"git remote add origin {url}")
             return 0
         os.system("printf \"The current url is: \"")
         os.system("git remote get-url origin")
-        if not skip:
-            print(f"Continue changing to {url}? (y/n) ")
-        if skip or getch() == "y":
+        if askyn(f"Continue changing to {url}?", skip):
             os.system(f"git remote set-url origin {url}")
         return 0
     elif os.path.exists('./.git'):
         os.system("git rev-parse --abbrev-ref HEAD > .git/p-branch.txt")
-        branch = ""
-        with open(".git/p-branch.txt", "r") as file:
-            branch = file.read().replace("\n", "").replace("\r", "")
-        os.system("rm .git/p-branch.txt")
+        branch = get_one_line(".git/p-branch.txt")
         os.system(f"git push -u origin {branch}")
         return 0
     print("vg: error: not in a git repository, neither a url provided")

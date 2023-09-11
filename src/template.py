@@ -1,7 +1,7 @@
 import os
 from config import load_config
 from license import MIT_LICENSE
-from tools import getch
+from tools import getch, askyn
 
 def gh_template_use(name, sources):
     templates = " ".join([source["display"] for source in sources.values()])
@@ -52,9 +52,7 @@ def gh_setup_template(name, owner, template):
 def gh_init(skip = False):
     config = load_config()
     user, cwd = config["username"], os.path.realpath('.')
-    if not skip:
-        print(f"Starting project in {cwd}, continue? (y/n) ")
-    if skip or getch() != "y":
+    if askyn(f"Starting project in {cwd}, continue?", skip):
         return 0
     name = input("What is the project name? ")
     template_used = gh_template_use(name, config["templates"])
@@ -75,4 +73,3 @@ def gh_init(skip = False):
         os.system("git commit -S -m \"First Commit\"")
         os.system("git push -u origin main")
         os.system("git checkout -b feat/v1")
-

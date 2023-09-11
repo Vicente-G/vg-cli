@@ -1,13 +1,12 @@
 from config import load_config
-from tools import rlinput
+from tools import rlinput, get_one_line
 from os import system
 
 def gh_make_pr(skip = False):
     config = load_config()
     title = input("Set title? (last commit) ")
     if title == "":
-        with open(".git/COMMIT_EDITMSG", "r") as file:
-            title = file.read().replace("\n", "").replace("\r", "")
+        title = get_one_line(".git/COMMIT_EDITMSG", clean=False)
     body_questions = config["pr-format"]
     body = ""
     for question in body_questions:
