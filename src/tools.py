@@ -31,10 +31,10 @@ def get_cwd():
     complete = os.getcwd()
     return complete.split('/')[-1].lower()
 
-def get_one_line(file, clean = True):
+def get_one_line(filename, clean = True):
     result = ""
-    with open(file, "r") as file:
+    with open(filename, "r") as file:
         result = file.read().replace("\n", "").replace("\r", "")
     if clean:
-        os.system(f"rm {file}")
+        os.system(f"rm {filename}")
     return result
