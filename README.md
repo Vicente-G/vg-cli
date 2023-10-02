@@ -37,5 +37,13 @@ I plan to make some other stuff with this cli when I get more time, so here is m
 * More GH commands! (Check the status of PRs and Issues, accept a PR to merge, etc)
 * OMZ auto config with the setup (This should be easy, but I need some testing)
 * One password only command (I want to stop typing so much passwords on everything!)
-* SSH easy config for GH (I always forget how it is done, so it could be of big help)
-* Automatic updates (Is something I always wanted to do, so I want to learn about it!)
+* SSH easy config for GH (I always forget how it is done, so it helps on a new start)
+
+## Features implemented!
+
+I was removing them, but I think is better to keep track of what has been done instead, so here they are:
+
+* A complete installation of my workspace, with some error checking to be compatible on Mac and Linux (also WSL) 
+* A CLI that support my daily Git and Docker usage in just one place, making it interactive and easy
+* A service initializer, so I take any of my currently made templates and get it working fast
+* Some "secret" commands to upgrade or uninstall the CLI at will

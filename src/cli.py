@@ -1,8 +1,10 @@
+import os
 from git import git_add, git_branch, git_commit, git_download, git_upload
 from github import gh_make_pr
 from colima import dstart, dstop
 from docker import dbuild, drun, dwatch
 
+from tools import srun
 from config import add_template
 from template import gh_init
 from argparse import RawTextHelpFormatter, ArgumentParser
@@ -45,7 +47,9 @@ parser = ArgumentParser(
     description=description,
     formatter_class=RawTextHelpFormatter
 )
-parser.version = "1.1.0"
+vfile = open("/usr/local/lib/vg/VERSION", "r")
+parser.version = vfile.read()
+vfile.close()
 
 parser.add_argument(
     "command",
@@ -58,8 +62,15 @@ parser.add_argument("-y", action="store_true", help="skip all confirmation promp
 args, unknown = parser.parse_known_args()
 
 try:
-    status = FUNCTIONS[args.command](*unknown, skip = args.y)
-    exit(status)
+    if FUNCTIONS[args.command](*unknown, skip = args.y) != 0:
+        exit(1)
+    url = "https://raw.githubusercontent.com/Vicente-G/vg-cli/main/VERSION"
+    if srun(f"curl -fsL {url}") != 0:
+        print("Version looking failed, please check your internet connection")
+        exit(0)
+    condition = f"$(curl -fsL {url}) != {parser.version}"
+    msg = "A new version of the CLI is available, run \\\"vg upgrade\\\" to install it!"
+    exit(os.system(f"if [[ {condition} ]] ; then echo \"{msg}\" ; fi"))
 except KeyboardInterrupt:
     print("\nvg: error: operation cancelled by user")
     exit(1)
