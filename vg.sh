@@ -32,12 +32,8 @@ mv /usr/local/lib/vg/vg.sh /usr/local/bin/vg.sh
 cd /usr/local/bin
 mv vg.sh vg ; cd
 chmod +x /usr/local/bin/vg
-echo "recovering older config..."
-set -o | grep on | grep noclobber >& /dev/null
-if [[ $? != 0 ]]
-then echo $SAVE_CONFIG > /usr/local/lib/vg/config.json
-else echo $SAVE_CONFIG |> /usr/local/lib/vg/config.json
+echo $SAVE_CONFIG > /usr/local/lib/vg/config.json
+echo "newer version of CLI succesfully upgraded!"
 fi
-echo "newer version of CLI succesfully installed!"
 
 python3 /usr/local/lib/vg/src/cli.py $@

@@ -1,6 +1,6 @@
 function brew_install() {
     printf "Looking for installation of ${1}... "
-    command -v "${1}" >& /dev/null
+    brew list | grep ${1} >& /dev/null
     if [[ $? != 0 ]]
     then printf "[FAILURE]\n Installing with brew!\n"
     brew install $1
